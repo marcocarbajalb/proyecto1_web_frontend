@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracker de series</title>
+    <meta name="author" content="Marco Carbajal">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <h1 class="header-title">Tracker de series</h1>
+            <button class="btn btn-primary" id="btn-nueva-serie">Nueva serie</button>
+        </div>
+    </header>
+
+    <main class="container main">
+        <section class="controls">
+            <input type="search" class="search-input" id="search-input" placeholder="Buscar por nombre...">
+            <select class="sort-select" id="sort-select">
+                <option value="id">Más recientes</option>
+                <option value="name">Nombre</option>
+                <option value="current_episode">Episodio actual</option>
+                <option value="total_episodes">Total de episodios</option>
+            </select>
+            <select class="order-select" id="order-select">
+                <option value="desc">Descendente</option>
+                <option value="asc">Ascendente</option>
+            </select>
+        </section>
+
+        <section class="series-grid" id="series-grid">
+        </section>
+
+        <section class="pagination" id="pagination">
+        </section>
+    </main>
+
+    <div class="modal-overlay hidden" id="modal-serie">
+        <div class="modal">
+            <header class="modal-header">
+                <h2 class="modal-title" id="modal-title">Nueva serie</h2>
+                <button class="modal-close" id="modal-close" aria-label="Cerrar">&times;</button>
+            </header>
+
+            <form class="modal-form" id="form-serie">
+                <input type="hidden" id="form-id">
+
+                <label class="form-field">
+                    <span class="form-label">Nombre</span>
+                    <input type="text" id="form-name" required maxlength="200">
+                    <span class="form-error" id="error-name"></span>
+                </label>
+
+                <div class="form-row">
+                    <label class="form-field">
+                        <span class="form-label">Episodio actual</span>
+                        <input type="number" id="form-current" required min="0">
+                        <span class="form-error" id="error-current_episode"></span>
+                    </label>
+
+                    <label class="form-field">
+                        <span class="form-label">Total de episodios</span>
+                        <input type="number" id="form-total" required min="1">
+                        <span class="form-error" id="error-total_episodes"></span>
+                    </label>
+                </div>
+
+                <label class="form-field">
+                    <span class="form-label">Imagen de portada</span>
+                    <input type="file" id="form-image" accept="image/jpeg,image/png,image/webp">
+                    <span class="form-hint">Opcional. Máximo 1 MB.</span>
+                </label>
+
+                <footer class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btn-cancelar">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="btn-guardar">Guardar</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
