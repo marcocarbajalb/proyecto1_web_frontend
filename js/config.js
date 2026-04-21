@@ -1,1 +1,3 @@
-// Configuración global del cliente
+const CONFIG = {
+    API_BASE_URL: 'http://localhost:8080'
+};
