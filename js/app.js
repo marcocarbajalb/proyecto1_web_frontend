@@ -7,6 +7,7 @@ const state = {
 };
 
 async function loadSeries() {
+    const scrollY = window.scrollY;
     ui.showLoading();
     try {
         const response = await api.listSeries(state);
@@ -14,6 +15,7 @@ async function loadSeries() {
             state.page = newPage;
             loadSeries();
         });
+        window.scrollTo(0, scrollY);
     } catch (err) {
         console.error(err);
         ui.showError('No se pudieron cargar las series. ¿Está corriendo el backend?');
@@ -102,6 +104,7 @@ function bindEvents() {
 
         if (action === 'edit') handleEdit(id);
         if (action === 'delete') handleDelete(id);
+        if (action === 'rate') handleRate(id, parseInt(button.dataset.rating, 10));
     });
 
     let searchTimeout;
@@ -131,3 +134,13 @@ document.addEventListener('DOMContentLoaded', () => {
     bindEvents();
     loadSeries();
 });
+
+async function handleRate(id, rating) {
+    try {
+        await api.setRating(id, rating);
+        const updated = await api.getSeries(id);
+        ui.updateCard(updated);
+    } catch (err) {
+        alert(`Error al guardar el rating: ${err.message}`);
+    }
+}

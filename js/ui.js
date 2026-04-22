@@ -26,6 +26,22 @@ const ui = {
 
         const progressPercent = Math.round((serie.current_episode / serie.total_episodes) * 100);
         const isComplete = serie.current_episode === serie.total_episodes;
+        const rating = serie.rating ?? 0;
+
+        const stars = Array.from({ length: 5 }, (_, i) => {
+            const starValue = 5 - i;
+            const filled = starValue <= rating;
+            return `
+                <button
+                    class="star ${filled ? 'star-filled' : ''}"
+                    data-action="rate"
+                    data-id="${serie.id}"
+                    data-rating="${starValue}"
+                    aria-label="${starValue} estrella${starValue > 1 ? 's' : ''}"
+                    title="${starValue} estrella${starValue > 1 ? 's' : ''}"
+                >★</button>
+            `;
+        }).join('');
 
         return `
             <article class="card" data-id="${serie.id}">
@@ -37,6 +53,10 @@ const ui = {
                 <div class="card-body">
                     <h3 class="card-title">${this.escape(serie.name)}</h3>
 
+                    <div class="card-rating" data-id="${serie.id}">
+                        ${stars}
+                    </div>
+
                     <div class="card-progress">
                         <div class="card-progress-bar">
                             <div class="card-progress-fill" style="width: ${progressPercent}%"></div>
@@ -47,10 +67,10 @@ const ui = {
                     </div>
 
                     <div class="card-actions">
-                        <button class="btn-icon" data-action="edit" data-id="${serie.id}" aria-label="Editar">
+                        <button class="btn-icon" data-action="edit" data-id="${serie.id}">
                             Editar
                         </button>
-                        <button class="btn-icon btn-icon-danger" data-action="delete" data-id="${serie.id}" aria-label="Eliminar">
+                        <button class="btn-icon btn-icon-danger" data-action="delete" data-id="${serie.id}">
                             Eliminar
                         </button>
                     </div>
@@ -143,6 +163,15 @@ const ui = {
         document.querySelectorAll('.form-error').forEach(el => {
             el.textContent = '';
         });
+    },
+
+    updateCard(serie) {
+        const existing = document.querySelector(`.card[data-id="${serie.id}"]`);
+        if (!existing) return;
+
+        const temp = document.createElement('div');
+        temp.innerHTML = this.renderCard(serie);
+        existing.replaceWith(temp.firstElementChild);
     },
 
     renderPagination(pagination, onPageChange) {
