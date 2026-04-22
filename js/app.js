@@ -113,6 +113,18 @@ function bindEvents() {
             loadSeries();
         }, 300);
     });
+
+    document.getElementById('sort-select').addEventListener('change', (event) => {
+        state.sort = event.target.value;
+        state.page = 1;
+        loadSeries();
+    });
+
+    document.getElementById('order-select').addEventListener('change', (event) => {
+        state.order = event.target.value;
+        state.page = 1;
+        loadSeries();
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
