@@ -388,3 +388,26 @@ body {
     font-family: "Graphik", "TiemposText", Georgia, serif;
     letter-spacing: 0;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+}
+
+.pagination-info {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+}
+
+.btn[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn[disabled]:hover {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+}

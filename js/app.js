@@ -1,6 +1,6 @@
 const state = {
     page: 1,
-    limit: 9,
+    limit: 6,
     q: '',
     sort: 'id',
     order: 'desc'
