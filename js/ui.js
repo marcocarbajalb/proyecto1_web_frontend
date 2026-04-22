@@ -78,5 +78,67 @@ const ui = {
                 <p>Cargando...</p>
             </div>
         `;
+    },
+
+    openModal(mode, serie = null) {
+        const overlay = document.getElementById('modal-serie');
+        const title = document.getElementById('modal-title');
+        const form = document.getElementById('form-serie');
+        const idInput = document.getElementById('form-id');
+        const nameInput = document.getElementById('form-name');
+        const currentInput = document.getElementById('form-current');
+        const totalInput = document.getElementById('form-total');
+        const imageInput = document.getElementById('form-image');
+
+        form.reset();
+        this.clearFormErrors();
+
+        if (mode === 'create') {
+            title.textContent = 'Nueva serie';
+            idInput.value = '';
+            currentInput.value = 0;
+            totalInput.value = 1;
+        } else {
+            title.textContent = 'Editar serie';
+            idInput.value = serie.id;
+            nameInput.value = serie.name;
+            currentInput.value = serie.current_episode;
+            totalInput.value = serie.total_episodes;
+        }
+
+        imageInput.value = '';
+        overlay.classList.remove('hidden');
+        nameInput.focus();
+    },
+
+    closeModal() {
+        document.getElementById('modal-serie').classList.add('hidden');
+        this.clearFormErrors();
+    },
+
+    getFormData() {
+        return {
+            id: document.getElementById('form-id').value,
+            name: document.getElementById('form-name').value.trim(),
+            current_episode: parseInt(document.getElementById('form-current').value, 10) || 0,
+            total_episodes: parseInt(document.getElementById('form-total').value, 10) || 0,
+            imageFile: document.getElementById('form-image').files[0] || null
+        };
+    },
+
+    showFormErrors(details) {
+        this.clearFormErrors();
+        if (!details) return;
+
+        for (const [field, message] of Object.entries(details)) {
+            const el = document.getElementById(`error-${field}`);
+            if (el) el.textContent = message;
+        }
+    },
+
+    clearFormErrors() {
+        document.querySelectorAll('.form-error').forEach(el => {
+            el.textContent = '';
+        });
     }
 };
