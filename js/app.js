@@ -10,7 +10,10 @@ async function loadSeries() {
     ui.showLoading();
     try {
         const response = await api.listSeries(state);
-        ui.renderSeries(response.data);
+        ui.renderSeries(response, (newPage) => {
+            state.page = newPage;
+            loadSeries();
+        });
     } catch (err) {
         console.error(err);
         ui.showError('No se pudieron cargar las series. ¿Está corriendo el backend?');
@@ -99,6 +102,16 @@ function bindEvents() {
 
         if (action === 'edit') handleEdit(id);
         if (action === 'delete') handleDelete(id);
+    });
+
+    let searchTimeout;
+    document.getElementById('search-input').addEventListener('input', (event) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            state.q = event.target.value.trim();
+            state.page = 1;
+            loadSeries();
+        }, 300);
     });
 }
 

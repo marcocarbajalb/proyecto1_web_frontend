@@ -1,8 +1,9 @@
 const PLACEHOLDER_IMAGE = 'assets/placeholder.svg';
 
 const ui = {
-    renderSeries(list) {
+    renderSeries(response, onPageChange) {
         const grid = document.getElementById('series-grid');
+        const list = response.data;
 
         if (list.length === 0) {
             grid.innerHTML = `
@@ -10,10 +11,12 @@ const ui = {
                     <p>No hay series para mostrar.</p>
                 </div>
             `;
+            this.renderPagination(response.pagination, onPageChange);
             return;
         }
 
         grid.innerHTML = list.map(serie => this.renderCard(serie)).join('');
+        this.renderPagination(response.pagination, onPageChange);
     },
 
     renderCard(serie) {
@@ -139,6 +142,38 @@ const ui = {
     clearFormErrors() {
         document.querySelectorAll('.form-error').forEach(el => {
             el.textContent = '';
+        });
+    },
+
+    renderPagination(pagination, onPageChange) {
+        const container = document.getElementById('pagination');
+
+        if (pagination.total_pages <= 1) {
+            container.innerHTML = '';
+            return;
+        }
+
+        const { page, total_pages, total } = pagination;
+        const prevDisabled = page <= 1 ? 'disabled' : '';
+        const nextDisabled = page >= total_pages ? 'disabled' : '';
+
+        container.innerHTML = `
+            <button class="btn btn-secondary" data-page="${page - 1}" ${prevDisabled}>
+                Anterior
+            </button>
+            <span class="pagination-info">
+                Página ${page} de ${total_pages} · ${total} series
+            </span>
+            <button class="btn btn-secondary" data-page="${page + 1}" ${nextDisabled}>
+                Siguiente
+            </button>
+        `;
+
+        container.querySelectorAll('button[data-page]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const newPage = parseInt(btn.dataset.page, 10);
+                onPageChange(newPage);
+            });
         });
     }
 };
