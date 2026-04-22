@@ -1,12 +1,13 @@
 :root {
-    --color-bg: #fafafa;
-    --color-surface: #ffffff;
-    --color-text: #18181b;
-    --color-text-muted: #71717a;
-    --color-border: #e4e4e7;
-    --color-accent: #6366f1;
-    --color-accent-hover: #4f46e5;
-    --color-error: #dc2626;
+    --color-bg: #14181c;
+    --color-surface: #1c2228;
+    --color-text: #9ab;
+    --color-text-muted: #678;
+    --color-text-heading: #fff;
+    --color-border: #2c3440;
+    --color-accent: #00e054;
+    --color-accent-hover: #00c048;
+    --color-error: #ff8080;
 
     --space-xs: 0.5rem;
     --space-sm: 0.75rem;
@@ -14,9 +15,9 @@
     --space-lg: 1.5rem;
     --space-xl: 2rem;
 
-    --radius-sm: 6px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
+    --radius-sm: 3px;
+    --radius-md: 4px;
+    --radius-lg: 6px;
 
     --transition: 150ms ease;
 }
@@ -378,4 +379,12 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.header-title,
+.card-title,
+.modal-title {
+    color: var(--color-text-heading);
+    font-family: "Graphik", "TiemposText", Georgia, serif;
+    letter-spacing: 0;
 }
