@@ -44,7 +44,7 @@ const ui = {
         }).join('');
 
         return `
-            <article class="card" data-id="${serie.id}">
+            <article class="card ${isComplete ? 'is-complete' : ''}" data-id="${serie.id}">
                 <div class="card-image-wrapper">
                     <img class="card-image" src="${this.escape(imageUrl)}" alt="${this.escape(serie.name)}" loading="lazy">
                     ${isComplete ? '<span class="card-badge">Completa</span>' : ''}
@@ -57,13 +57,24 @@ const ui = {
                         ${stars}
                     </div>
 
+                    <div class="card-episode-controls">
+                        <button class="btn-episode" data-action="decrease" data-id="${serie.id}" ${serie.current_episode === 0 ? 'disabled' : ''}>
+                            −
+                        </button>
+                        <span class="card-episode-count">Episodio ${serie.current_episode}</span>
+                        <button class="btn-episode" data-action="increase" data-id="${serie.id}" ${isComplete ? 'disabled' : ''}>
+                            +
+                        </button>
+                    </div>
+
                     <div class="card-progress">
                         <div class="card-progress-bar">
                             <div class="card-progress-fill" style="width: ${progressPercent}%"></div>
                         </div>
-                        <span class="card-progress-text">
-                            ${serie.current_episode} / ${serie.total_episodes}
-                        </span>
+                        <div class="card-progress-text">
+                            <span>${serie.current_episode} / ${serie.total_episodes}</span>
+                            <span>${progressPercent}%</span>
+                        </div>
                     </div>
 
                     <div class="card-actions">
@@ -121,12 +132,14 @@ const ui = {
             idInput.value = '';
             currentInput.value = 0;
             totalInput.value = 1;
+            overlay.classList.remove('modal-edit');
         } else {
             title.textContent = 'Editar serie';
             idInput.value = serie.id;
             nameInput.value = serie.name;
             currentInput.value = serie.current_episode;
             totalInput.value = serie.total_episodes;
+            overlay.classList.add('modal-edit');
         }
 
         imageInput.value = '';

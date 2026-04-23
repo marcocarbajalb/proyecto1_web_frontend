@@ -105,6 +105,8 @@ function bindEvents() {
         if (action === 'edit') handleEdit(id);
         if (action === 'delete') handleDelete(id);
         if (action === 'rate') handleRate(id, parseInt(button.dataset.rating, 10));
+        if (action === 'increase') handleEpisodeChange(id, 1);
+        if (action === 'decrease') handleEpisodeChange(id, -1);
     });
 
     let searchTimeout;
@@ -142,5 +144,24 @@ async function handleRate(id, rating) {
         ui.updateCard(updated);
     } catch (err) {
         alert(`Error al guardar el rating: ${err.message}`);
+    }
+}
+
+async function handleEpisodeChange(id, delta) {
+    try {
+        const serie = await api.getSeries(id);
+        const newEpisode = serie.current_episode + delta;
+
+        if (newEpisode < 0 || newEpisode > serie.total_episodes) return;
+
+        const updated = await api.updateSeries(id, {
+            name: serie.name,
+            current_episode: newEpisode,
+            total_episodes: serie.total_episodes
+        });
+
+        ui.updateCard(updated);
+    } catch (err) {
+        alert(`Error al actualizar episodio: ${err.message}`);
     }
 }
